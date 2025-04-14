@@ -68,31 +68,28 @@
       z-index: 1;
     }
 
-    .theme-toggle {
+    .theme-toggle, .play-music {
       position: fixed;
       top: 1rem;
-      right: 1rem;
       padding: 0.5rem 1rem;
-      background-color: var(--text-color);
-      color: var(--bg-color);
       border: none;
       cursor: pointer;
       border-radius: 5px;
       z-index: 2;
+      font-size: 1rem;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .theme-toggle {
+      right: 1rem;
+      background-color: var(--text-color);
+      color: var(--bg-color);
     }
 
     .play-music {
-      position: fixed;
-      top: 1rem;
       left: 1rem;
-      padding: 0.5rem 1rem;
       background-color: var(--text-color);
       color: var(--bg-color);
-      border: none;
-      cursor: pointer;
-      border-radius: 5px;
-      z-index: 2;
-      transition: background-color 0.3s, color 0.3s;
     }
 
     .play-music.active {
@@ -122,6 +119,24 @@
       0% { transform: translateY(-50px); opacity: 1; }
       100% { transform: translateY(110vh); opacity: 0; }
     }
+
+    /* Responsive layout */
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 2rem;
+      }
+      header p, section p {
+        font-size: 1rem;
+        padding: 0 1rem;
+      }
+      .theme-toggle, .play-music {
+        font-size: 0.9rem;
+        padding: 0.4rem 0.8rem;
+      }
+      section h2 {
+        font-size: 1.5rem;
+      }
+    }
   </style>
 </head>
 <body>
@@ -129,8 +144,8 @@
   <button class="theme-toggle" onclick="toggleTheme()">🌓 Tema</button>
   <button class="play-music" id="playButton" onclick="toggleMusic()">▶️ Musica</button>
 
-  <audio id="background-music" style="display: none;">
-    <source src="https://cdn.pixabay.com/audio/2022/11/04/audio_e13cfb9ba4.mp3" type="audio/mpeg">
+  <audio id="background-music" preload="auto">
+    <source src="https://cdn.pixabay.com/download/audio/2022/11/04/audio_e13cfb9ba4.mp3?filename=ghostly-winds-124984.mp3" type="audio/mpeg">
     Il tuo browser non supporta l'audio HTML5.
   </audio>
 
@@ -172,7 +187,6 @@
       const currentTheme = document.body.getAttribute("data-theme");
       document.body.setAttribute("data-theme", currentTheme === "dark" ? "light" : "dark");
     }
-
     document.body.setAttribute("data-theme", "light");
 
     let isPlaying = false;
