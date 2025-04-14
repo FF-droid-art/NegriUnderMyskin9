@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
   <title>negriundermyskin</title>
   <style>
     :root {
@@ -24,8 +24,51 @@
       overflow-x: hidden;
     }
 
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #fff;
+      border-bottom: 1px solid #ccc;
+      z-index: 10;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.5rem 1rem;
+    }
+
+    .menu-toggle {
+      font-size: 1.5rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    .menu {
+      display: none;
+      flex-direction: column;
+      background-color: #fff;
+      position: absolute;
+      top: 3rem;
+      left: 0;
+      width: 100%;
+      border-top: 1px solid #ccc;
+    }
+
+    .menu a {
+      padding: 1rem;
+      text-decoration: none;
+      color: #000;
+      border-bottom: 1px solid #eee;
+    }
+
+    .menu.show {
+      display: flex;
+    }
+
     header {
-      padding: 4rem 2rem;
+      padding: 6rem 2rem 4rem;
       text-align: center;
       border-bottom: 1px solid #ddd;
       position: relative;
@@ -70,7 +113,7 @@
 
     .theme-toggle, .play-music {
       position: fixed;
-      top: 1rem;
+      top: 3.5rem;
       padding: 0.5rem 1rem;
       border: none;
       cursor: pointer;
@@ -97,6 +140,13 @@
       color: white;
     }
 
+    .volume-control {
+      position: fixed;
+      top: 7rem;
+      left: 1rem;
+      z-index: 2;
+    }
+
     .emoji-container {
       position: fixed;
       top: 0;
@@ -120,7 +170,6 @@
       100% { transform: translateY(110vh); opacity: 0; }
     }
 
-    /* Responsive layout */
     @media (max-width: 600px) {
       header h1 {
         font-size: 2rem;
@@ -136,15 +185,32 @@
       section h2 {
         font-size: 1.5rem;
       }
+      iframe {
+        width: 90% !important;
+        height: auto !important;
+      }
     }
   </style>
 </head>
 <body>
 
+  <nav>
+    <div><strong>MENU</strong></div>
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    <div class="menu" id="mobileMenu">
+      <a href="#manifesto">Manifesto</a>
+      <a href="#video">Video</a>
+      <a href="#contatti">Contatti</a>
+    </div>
+  </nav>
+
   <button class="theme-toggle" onclick="toggleTheme()">🌓 Tema</button>
   <button class="play-music" id="playButton" onclick="toggleMusic()">▶️ Musica</button>
+  <div class="volume-control">
+    <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1">
+  </div>
 
-  <audio id="background-music" preload="auto">
+  <audio id="background-music" controls muted>
     <source src="https://cdn.pixabay.com/download/audio/2022/11/04/audio_e13cfb9ba4.mp3?filename=ghostly-winds-124984.mp3" type="audio/mpeg">
     Il tuo browser non supporta l'audio HTML5.
   </audio>
@@ -156,24 +222,24 @@
     <p>Un'esplorazione artistica tra pelle, identità e profondità interiore.</p>
   </header>
 
-  <section>
+  <section id="manifesto">
     <h2>Manifesto</h2>
     <p>
-      Noi siamo <strong>negriundermyskin</strong>: un collettivo di ragazzi fieri, simpatici e autistici.<br>
+      Noi siamo <strong>negriundermyskin</strong>: un collettivo di ragazzi fieri, simpatici e altruisti.<br>
       Crediamo nella forza dell'arte e nell'empatia come strumento per cambiare il mondo.<br>
       Siamo pronti a batterci per il prossimo, a lasciare un segno profondo sotto la pelle della realtà.<br><br>
       Il nostro manifesto è fatto di coraggio, comunità e libertà creativa.
     </p>
   </section>
 
-  <section>
+  <section id="video">
     <h2>Video</h2>
     <iframe width="560" height="315" src="https://www.youtube.com/embed/AF0DCJ_KOeU" 
       title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
     </iframe>
   </section>
 
-  <section>
+  <section id="contatti">
     <h2>Contatti</h2>
     <p>Seguici su Instagram: <a href="https://instagram.com/putrido_pantano.reload" target="_blank">@putrido_pantano.reload</a></p>
   </section>
@@ -189,10 +255,16 @@
     }
     document.body.setAttribute("data-theme", "light");
 
+    function toggleMenu() {
+      const menu = document.getElementById("mobileMenu");
+      menu.classList.toggle("show");
+    }
+
     let isPlaying = false;
     function toggleMusic() {
       const audio = document.getElementById('background-music');
       const button = document.getElementById('playButton');
+      audio.muted = false;
 
       if (!isPlaying) {
         audio.play().then(() => {
@@ -201,7 +273,7 @@
           button.classList.add('active');
         }).catch(err => {
           console.error("Errore nella riproduzione:", err);
-          alert("Clicca di nuovo per avviare la musica.");
+          alert("Il browser ha bloccato l'audio. Tocca ancora per farlo partire.");
         });
       } else {
         audio.pause();
@@ -210,6 +282,11 @@
         button.classList.remove('active');
       }
     }
+
+    document.getElementById("volumeSlider").addEventListener("input", function () {
+      const audio = document.getElementById("background-music");
+      audio.volume = this.value;
+    });
 
     function createEmoji() {
       const emojiList = ['😄','😊','😎','😁','🤩','😆'];
