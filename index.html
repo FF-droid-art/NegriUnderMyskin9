@@ -21,15 +21,15 @@
       background-color: var(--bg-color);
       color: var(--text-color);
       line-height: 1.6;
-      transition: background-color 0.3s, color 0.3s;
-      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><text x="0" y="50" font-size="40">%F0%9F%98%84</text></svg>');
-      background-repeat: repeat;
+      overflow-x: hidden;
     }
 
     header {
       padding: 4rem 2rem;
       text-align: center;
       border-bottom: 1px solid #ddd;
+      position: relative;
+      z-index: 1;
     }
 
     header h1 {
@@ -50,6 +50,8 @@
       max-width: 800px;
       margin: 0 auto;
       text-align: center;
+      position: relative;
+      z-index: 1;
     }
 
     section h2 {
@@ -62,6 +64,8 @@
       padding: 2rem;
       font-size: 0.9rem;
       color: #777;
+      position: relative;
+      z-index: 1;
     }
 
     .theme-toggle {
@@ -74,18 +78,57 @@
       border: none;
       cursor: pointer;
       border-radius: 5px;
+      z-index: 2;
+    }
+
+    .play-music {
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      padding: 0.5rem 1rem;
+      background-color: var(--text-color);
+      color: var(--bg-color);
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      z-index: 2;
+    }
+
+    .emoji-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .emoji {
+      position: absolute;
+      top: -50px;
+      font-size: 2rem;
+      animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(-50px); opacity: 1; }
+      100% { transform: translateY(110vh); opacity: 0; }
     }
   </style>
 </head>
 <body>
 
   <button class="theme-toggle" onclick="toggleTheme()">🌓 Tema</button>
+  <button class="play-music" onclick="playMusic()">🎵 Play Musica</button>
 
-  <!-- Musica di sottofondo -->
-  <audio autoplay loop hidden>
-    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+  <audio id="background-music">
+    <source src="https://cdn.pixabay.com/audio/2022/11/04/audio_e13cfb9ba4.mp3" type="audio/mpeg">
     Il tuo browser non supporta l'audio HTML5.
   </audio>
+
+  <div class="emoji-container" id="emoji-container"></div>
 
   <header>
     <h1>negriundermyskin</h1>
@@ -124,10 +167,29 @@
       document.body.setAttribute("data-theme", currentTheme === "dark" ? "light" : "dark");
     }
 
-    // Tema chiaro di default
     document.body.setAttribute("data-theme", "light");
+
+    function playMusic() {
+      const audio = document.getElementById('background-music');
+      audio.play();
+    }
+
+    function createEmoji() {
+      const emojiList = ['😄','😊','😎','😁','🤩','😆'];
+      const emoji = document.createElement('div');
+      emoji.classList.add('emoji');
+      emoji.textContent = emojiList[Math.floor(Math.random() * emojiList.length)];
+      emoji.style.left = Math.random() * 100 + 'vw';
+      emoji.style.animationDuration = (5 + Math.random() * 5) + 's';
+      document.getElementById('emoji-container').appendChild(emoji);
+
+      setTimeout(() => {
+        emoji.remove();
+      }, 10000);
+    }
+
+    setInterval(createEmoji, 300);
   </script>
 
 </body>
 </html>
-
