@@ -20,7 +20,6 @@
       font-family: 'Helvetica Neue', sans-serif;
       background-color: var(--bg-color);
       color: var(--text-color);
-      line-height: 1.6;
       overflow-x: hidden;
     }
 
@@ -56,59 +55,15 @@
       border-top: 1px solid #ccc;
     }
 
+    .menu.show {
+      display: flex;
+    }
+
     .menu a {
       padding: 1rem;
       text-decoration: none;
       color: #000;
       border-bottom: 1px solid #eee;
-    }
-
-    .menu.show {
-      display: flex;
-    }
-
-    header {
-      padding: 6rem 2rem 4rem;
-      text-align: center;
-      border-bottom: 1px solid #ddd;
-      position: relative;
-      z-index: 1;
-    }
-
-    header h1 {
-      font-size: 3rem;
-      margin-bottom: 0.5rem;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-    }
-
-    header p {
-      font-size: 1.2rem;
-      max-width: 600px;
-      margin: 0 auto;
-    }
-
-    section {
-      padding: 3rem 2rem;
-      max-width: 800px;
-      margin: 0 auto;
-      text-align: center;
-      position: relative;
-      z-index: 1;
-    }
-
-    section h2 {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-    }
-
-    footer {
-      text-align: center;
-      padding: 2rem;
-      font-size: 0.9rem;
-      color: #777;
-      position: relative;
-      z-index: 1;
     }
 
     .theme-toggle, .play-music {
@@ -147,6 +102,38 @@
       z-index: 2;
     }
 
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1.5rem;
+      padding: 7rem 2rem 3rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .person {
+      text-align: center;
+    }
+
+    .person img {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+    }
+
+    .person-info {
+      margin-top: 0.5rem;
+      font-size: 1rem;
+      font-weight: bold;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.9rem;
+      color: #777;
+    }
+
     .emoji-container {
       position: fixed;
       top: 0;
@@ -169,38 +156,15 @@
       0% { transform: translateY(-50px); opacity: 1; }
       100% { transform: translateY(110vh); opacity: 0; }
     }
-
-    @media (max-width: 600px) {
-      header h1 {
-        font-size: 2rem;
-      }
-      header p, section p {
-        font-size: 1rem;
-        padding: 0 1rem;
-      }
-      .theme-toggle, .play-music {
-        font-size: 0.9rem;
-        padding: 0.4rem 0.8rem;
-      }
-      section h2 {
-        font-size: 1.5rem;
-      }
-      iframe {
-        width: 90% !important;
-        height: auto !important;
-      }
-    }
   </style>
 </head>
-<body>
+<body data-theme="light">
 
   <nav>
-    <div><strong>MENU</strong></div>
+    <div><strong>Galleria</strong></div>
     <button class="menu-toggle" onclick="toggleMenu()">☰</button>
     <div class="menu" id="mobileMenu">
-      <a href="#manifesto">Manifesto</a>
-      <a href="#video">Video</a>
-      <a href="#contatti">Contatti</a>
+      <a href="#galleria">Persone</a>
     </div>
   </nav>
 
@@ -217,31 +181,14 @@
 
   <div class="emoji-container" id="emoji-container"></div>
 
-  <header>
-    <h1>negriundermyskin</h1>
-    <p>Un'esplorazione artistica tra pelle, identità e profondità interiore.</p>
-  </header>
-
-  <section id="manifesto">
-    <h2>Manifesto</h2>
-    <p>
-      Noi siamo <strong>negriundermyskin</strong>: un collettivo di ragazzi fieri, simpatici e altruisti.<br>
-      Crediamo nella forza dell'arte e nell'empatia come strumento per cambiare il mondo.<br>
-      Siamo pronti a batterci per il prossimo, a lasciare un segno profondo sotto la pelle della realtà.<br><br>
-      Il nostro manifesto è fatto di coraggio, comunità e libertà creativa.
-    </p>
-  </section>
-
-  <section id="video">
-    <h2>Video</h2>
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/AF0DCJ_KOeU" 
-      title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-    </iframe>
-  </section>
-
-  <section id="contatti">
-    <h2>Contatti</h2>
-    <p>Seguici su Instagram: <a href="https://instagram.com/putrido_pantano.reload" target="_blank">@putrido_pantano.reload</a></p>
+  <section id="galleria" class="gallery">
+    <!-- Esempio di persona -->
+    <!--
+    <div class="person">
+      <img src="immagine1.jpg" alt="Nome Persona">
+      <div class="person-info">Nome Cognome<br>01/01/1990</div>
+    </div>
+    -->
   </section>
 
   <footer>
@@ -253,7 +200,6 @@
       const currentTheme = document.body.getAttribute("data-theme");
       document.body.setAttribute("data-theme", currentTheme === "dark" ? "light" : "dark");
     }
-    document.body.setAttribute("data-theme", "light");
 
     function toggleMenu() {
       const menu = document.getElementById("mobileMenu");
@@ -304,6 +250,5 @@
 
     setInterval(createEmoji, 300);
   </script>
-
 </body>
 </html>
