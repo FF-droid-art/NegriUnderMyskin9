@@ -12,7 +12,7 @@
 
     [data-theme="dark"] {
       --bg-color: #121212;
-      --text-color: #000000;
+      --text-color: #ffffff;
     }
 
     body {
@@ -20,72 +20,30 @@
       font-family: 'Helvetica Neue', sans-serif;
       background-color: var(--bg-color);
       color: var(--text-color);
-      overflow-x: hidden;
+      padding: 2rem;
     }
 
-    nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      background-color: #fff;
-      border-bottom: 1px solid #ccc;
-      z-index: 10;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.5rem 1rem;
-    }
-
-    .menu-toggle {
-      font-size: 1.5rem;
-      background: none;
-      border: none;
-      cursor: pointer;
-    }
-
-    .menu {
-      display: none;
-      flex-direction: column;
-      background-color: #fff;
-      position: absolute;
-      top: 3rem;
-      left: 0;
-      width: 100%;
-      border-top: 1px solid #ccc;
-    }
-
-    .menu.show {
-      display: flex;
-    }
-
-    .menu a {
-      padding: 1rem;
-      text-decoration: none;
-      color: #000;
-      border-bottom: 1px solid #eee;
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
     }
 
     .theme-toggle, .play-music {
-      position: fixed;
-      top: 3.5rem;
+      margin: 0.5rem;
       padding: 0.5rem 1rem;
       border: none;
       cursor: pointer;
       border-radius: 5px;
-      z-index: 2;
       font-size: 1rem;
       transition: background-color 0.3s, color 0.3s;
     }
 
     .theme-toggle {
-      right: 1rem;
       background-color: var(--text-color);
       color: var(--bg-color);
     }
 
     .play-music {
-      left: 1rem;
       background-color: var(--text-color);
       color: var(--bg-color);
     }
@@ -96,22 +54,18 @@
     }
 
     .volume-control {
-      position: fixed;
-      top: 7rem;
-      left: 1rem;
-      z-index: 2;
+      margin-top: 1rem;
     }
 
     .gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 1.5rem;
-      padding: 7rem 2rem 3rem;
-      max-width: 1200px;
-      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: center;
     }
 
     .person {
+      width: 200px;
       text-align: center;
     }
 
@@ -119,77 +73,47 @@
       width: 100%;
       height: auto;
       border-radius: 10px;
+      border: 1px solid #ccc;
     }
 
     .person-info {
       margin-top: 0.5rem;
       font-size: 1rem;
-      font-weight: bold;
     }
 
     footer {
       text-align: center;
-      padding: 2rem;
+      margin-top: 3rem;
       font-size: 0.9rem;
       color: #777;
-    }
-
-    .emoji-container {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      overflow: hidden;
-      z-index: 0;
-    }
-
-    .emoji {
-      position: absolute;
-      top: -50px;
-      font-size: 2rem;
-      animation: fall linear infinite;
-    }
-
-    @keyframes fall {
-      0% { transform: translateY(-50px); opacity: 1; }
-      100% { transform: translateY(110vh); opacity: 0; }
     }
   </style>
 </head>
 <body data-theme="light">
 
-  <nav>
-    <div><strong>Galleria</strong></div>
-    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-    <div class="menu" id="mobileMenu">
-      <a href="#galleria">Persone</a>
+  <header>
+    <h1>Galleria Persone</h1>
+    <button class="theme-toggle" onclick="toggleTheme()">🌓 Tema</button>
+    <button class="play-music" id="playButton" onclick="toggleMusic()">▶️ Musica</button>
+    <div class="volume-control">
+      <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1">
     </div>
-  </nav>
-
-  <button class="theme-toggle" onclick="toggleTheme()">🌓 Tema</button>
-  <button class="play-music" id="playButton" onclick="toggleMusic()">▶️ Musica</button>
-  <div class="volume-control">
-    <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1">
-  </div>
+  </header>
 
   <audio id="background-music" controls muted>
     <source src="https://cdn.pixabay.com/download/audio/2022/11/04/audio_e13cfb9ba4.mp3?filename=ghostly-winds-124984.mp3" type="audio/mpeg">
     Il tuo browser non supporta l'audio HTML5.
   </audio>
 
-  <div class="emoji-container" id="emoji-container"></div>
-
-  <section id="galleria" class="gallery">
-    <!-- Esempio di persona -->
-    <!--
+  <main class="gallery" id="gallery">
+    <!-- Inserisci qui le persone -->
+    <!-- Esempio:
     <div class="person">
-      <img src="immagine1.jpg" alt="Nome Persona">
+      <img src="path/to/image.jpg" alt="Nome Cognome">
       <div class="person-info">Nome Cognome<br>01/01/1990</div>
     </div>
     -->
-  </section>
+  </main>
 
   <footer>
     &copy; 2025 negriundermyskin – Tutti i diritti riservati
@@ -199,11 +123,6 @@
     function toggleTheme() {
       const currentTheme = document.body.getAttribute("data-theme");
       document.body.setAttribute("data-theme", currentTheme === "dark" ? "light" : "dark");
-    }
-
-    function toggleMenu() {
-      const menu = document.getElementById("mobileMenu");
-      menu.classList.toggle("show");
     }
 
     let isPlaying = false;
@@ -233,22 +152,6 @@
       const audio = document.getElementById("background-music");
       audio.volume = this.value;
     });
-
-    function createEmoji() {
-      const emojiList = ['😄','😊','😎','😁','🤩','😆'];
-      const emoji = document.createElement('div');
-      emoji.classList.add('emoji');
-      emoji.textContent = emojiList[Math.floor(Math.random() * emojiList.length)];
-      emoji.style.left = Math.random() * 100 + 'vw';
-      emoji.style.animationDuration = (5 + Math.random() * 5) + 's';
-      document.getElementById('emoji-container').appendChild(emoji);
-
-      setTimeout(() => {
-        emoji.remove();
-      }, 10000);
-    }
-
-    setInterval(createEmoji, 300);
   </script>
 </body>
 </html>
